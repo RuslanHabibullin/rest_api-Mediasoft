@@ -54,17 +54,18 @@ func (r *FurnituresListPostgres) DeleteList(listID int) error {
 
 func (r *FurnituresListPostgres) UpdateAll(listID int, input restapimediasoft.UpdateListInput) error {
 	setQuery, argId, args := UpdateChecker(input)
-	fm
-	if argId >= 4 {
+	if argId == 6 {
 		query := fmt.Sprintf("UPDATE %s tl SET %s WHERE tl.id = $%d",
 			furnituresTable, setQuery, argId)
-		_, err := r.db.Exec(query, args...)
+		args = append(args, listID)
 		logrus.Debugf("updateQuery: %s", query)
 		logrus.Debugf("args: %s", args)
+		_, err := r.db.Exec(query, args...)
 		return err
 	} else {
 		return nil
 	}
+
 }
 
 func (r *FurnituresListPostgres) Update(listID int, input restapimediasoft.UpdateListInput) error {
@@ -79,4 +80,5 @@ func (r *FurnituresListPostgres) Update(listID int, input restapimediasoft.Updat
 
 	_, err := r.db.Exec(query, args...)
 	return err
+
 }
