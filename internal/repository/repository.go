@@ -12,7 +12,7 @@ type FurniruresList interface {
 	GetByID(listID int) (restapimediasoft.Furnitures_list, error)
 	DeleteList(listID int) error
 	UpdateAll(listID int, input restapimediasoft.UpdateListInput) error
-	Update(listIDid int, input restapimediasoft.UpdateListInput) error
+	Update(listID int, input restapimediasoft.UpdateListInput) error
 }
 type Repository struct {
 	FurniruresList

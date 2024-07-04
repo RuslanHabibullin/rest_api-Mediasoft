@@ -12,18 +12,18 @@ type getAllListsResponse struct {
 	Data []restapimediasoft.Furnitures_list `json:"data"`
 }
 
+func (h *Handler) clear_GET(id int, c *gin.Context) (restapimediasoft.Furnitures_list, error) {
+	list, err := h.services.Furnitures_List.GetByID(id)
+	return list, err
+}
 func (h *Handler) furniture_GET(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid id params")
 		return
 	}
-	list, err := h.services.Furnitures_List.GetByID(id)
+	list, _ := h.clear_GET(id, c)
 
-	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
 	c.JSON(http.StatusOK, list)
 }
 func (h *Handler) furniture_POST(c *gin.Context) {
@@ -37,9 +37,14 @@ func (h *Handler) furniture_POST(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"id": id,
-	})
+
+	list, err := h.clear_GET(id, c)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, list)
 }
 func (h *Handler) furnitures_GET(c *gin.Context) {
 	lists, err := h.services.Furnitures_List.GetAll()
@@ -65,12 +70,18 @@ func (h *Handler) furniture_PUT(c *gin.Context) {
 		return
 	}
 
-	if err := h.services.Furnitures_List.Update(id, input); err != nil {
+	if err := h.services.Furnitures_List.UpdateAll(id, input); err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, statusResponse{"ok"})
+	list, err := h.clear_GET(id, c)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, list)
 }
 
 func (h *Handler) furniture_PATCH(c *gin.Context) {
@@ -91,7 +102,13 @@ func (h *Handler) furniture_PATCH(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, statusResponse{"ok"})
+	list, err := h.clear_GET(id, c)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, list)
 }
 func (h *Handler) furniture_DELETE(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
