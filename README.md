@@ -106,10 +106,20 @@ migrate -path <ваш путь до проекта>/schema 'postgres://postgres:
 #### Описание как запустить ваш проект
 Необходимо зайти на сайт [postman](https://www.postman.com/).
  Войти и зарегестрироваться там.
+ 
  Перейти на страницу "Send an API request".
+ 
+ Начать компиляцию с помощью команды
+ 
+ ```
+ go run cmd/main.go
+ ```
  Вводить соответствующие команды для запросов:
+ 
  localhost:8000/api/lists для запросов GET, POST
+ 
  localhost:8000/api/lists/<нужный id> для запросов GET, PUT, PATCH, DELETE
+ 
 
 ***
 #### *В случае, если не получится запустить проект
