@@ -3,6 +3,7 @@ package repository
 import (
 	"fmt"
 	restapimediasoft "tgtest/Desktop/Univercity/go_proj/rest_api_mediasoft/rest_api-Mediasoft"
+	"tgtest/Desktop/Univercity/go_proj/rest_api_mediasoft/rest_api-Mediasoft/internal/repository/middleware"
 
 	"github.com/jmoiron/sqlx"
 	"github.com/sirupsen/logrus"
@@ -53,7 +54,7 @@ func (r *FurnituresListPostgres) DeleteList(listID int) error {
 }
 
 func (r *FurnituresListPostgres) UpdateAll(listID int, input restapimediasoft.UpdateListInput) error {
-	setQuery, argId, args := UpdateChecker(input)
+	setQuery, argId, args := middleware.UpdateChecker(input)
 	if argId == 6 {
 		query := fmt.Sprintf("UPDATE %s tl SET %s WHERE tl.id = $%d",
 			furnituresTable, setQuery, argId)
@@ -70,7 +71,7 @@ func (r *FurnituresListPostgres) UpdateAll(listID int, input restapimediasoft.Up
 
 func (r *FurnituresListPostgres) Update(listID int, input restapimediasoft.UpdateListInput) error {
 
-	setQuery, argId, args := UpdateChecker(input)
+	setQuery, argId, args := middleware.UpdateChecker(input)
 	query := fmt.Sprintf("UPDATE %s tl SET %s WHERE tl.id = $%d",
 		furnituresTable, setQuery, argId)
 	args = append(args, listID)
