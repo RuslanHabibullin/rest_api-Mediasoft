@@ -12,7 +12,7 @@ type getAllListsResponse struct {
 	Data []restapimediasoft.Furnitures_list `json:"data"`
 }
 
-func (h *Handler) clear_GET(id int, c *gin.Context) (restapimediasoft.Furnitures_list, error) {
+func (h *Handler) clear_GET(id int) (restapimediasoft.Furnitures_list, error) {
 	list, err := h.services.Furnitures_List.GetByID(id)
 	return list, err
 }
@@ -22,7 +22,7 @@ func (h *Handler) furniture_GET(c *gin.Context) {
 		newErrorResponse(c, http.StatusBadRequest, "invalid id params")
 		return
 	}
-	list, _ := h.clear_GET(id, c)
+	list, _ := h.clear_GET(id)
 
 	c.JSON(http.StatusOK, list)
 }
@@ -38,7 +38,7 @@ func (h *Handler) furniture_POST(c *gin.Context) {
 		return
 	}
 
-	list, err := h.clear_GET(id, c)
+	list, err := h.clear_GET(id)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -75,7 +75,7 @@ func (h *Handler) furniture_PUT(c *gin.Context) {
 		return
 	}
 
-	list, err := h.clear_GET(id, c)
+	list, err := h.clear_GET(id)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -102,7 +102,7 @@ func (h *Handler) furniture_PATCH(c *gin.Context) {
 		return
 	}
 
-	list, err := h.clear_GET(id, c)
+	list, err := h.clear_GET(id)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
